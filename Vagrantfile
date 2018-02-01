@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "bento/ubuntu-16.04"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "../", "/synced_folder"
+  # config.vm.synced_folder "../", "/synced_folder"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -67,9 +67,9 @@ Vagrant.configure("2") do |config|
     # vb.gui = true
 
     # Customize the amount of memory on the VM:
-    vb.memory = "2048"
+    vb.memory = "3072"
     vb.cpus = "2"
-    vb.name = "dbdev_oi"
+    vb.name = "dbdev_vm"
   end
 
   #
@@ -120,7 +120,7 @@ Vagrant.configure("2") do |config|
     echo "\n# Automatically added by Vagrant provision script." >> /etc/neo4j/neo4j.conf
     echo "dbms.connectors.default_listen_address=0.0.0.0" >> /etc/neo4j/neo4j.conf
     echo "dbms.memory.heap.initial_size=1024m" >> /etc/neo4j/neo4j.conf
-    echo "dbms.memory.heap.max_size=1792m" >> /etc/neo4j/neo4j.conf
+    echo "dbms.memory.heap.max_size=2560m" >> /etc/neo4j/neo4j.conf
     echo "browser.remote_content_hostname_whitelist=*" >> /etc/neo4j/neo4j.conf
 
     sudo chmod a+rw -R /var/log/neo4j
@@ -163,8 +163,19 @@ Vagrant.configure("2") do |config|
     # sudo service mysql restart
     # sudo /etc/init.d/mysql restart
 
-    cd /synced_folder/playbooks/
-    python3 serve_playbooks.py &
+    # cd /synced_folder/playbooks/
+    # python3 serve_playbooks.py &
+
+    sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo apt-get update
+    sudo apt-get install -y docker-ce
+
+    # from https://docs.docker.com/install/linux/linux-postinstall/#manage-docker-as-a-non-root-user
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+    sudo systemctl enable docker
   SHELL
 end
 
