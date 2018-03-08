@@ -1,0 +1,18 @@
+version: "3"
+services:
+  db:
+    image: postgres:alpine
+    network: db
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  jupyter:
+    image: jupyterhub/jupyterhub
+    network: db
+    ports: 8080
+
+networks:
+  db:
+
+volumes:
+  db-data:
