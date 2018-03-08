@@ -1,4 +1,4 @@
-# Assignment 3: Twitter normalisation
+# Assignment 4: Twitter normalisation
 
 Given a SQN table over some Twitter data, construct a normalised relation to the 3rd NF based on the schema below.
 
