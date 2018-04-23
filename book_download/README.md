@@ -132,6 +132,12 @@ Copy the final zipped archive to your local machine:
 $ vagrant scp bookdownloaddroplet:/root/archive.tar ~/Downloads/
 ```
 
+You might want to keep the file containing the links to the files, which you actually downloaded.
+
+```bash
+$ vagrant scp bookdownloaddroplet:/root/zipfileLinks.txt ~/Downloads/
+```
+
 
 ## Destroying the Droplet
 
